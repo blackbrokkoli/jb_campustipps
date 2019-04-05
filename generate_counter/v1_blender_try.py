@@ -5,21 +5,20 @@ def progStart():
     while _inputValue != 4:
         if _inputValue == 0:
             print ('Willkommen! \n[1] Generiere Fortlaufend\n[2] Generiere spez. Intervall\n[3] Something\n[4] Beende Programm')
-            _inputValue = input()
+            _inputValue = int(input())
         elif int(_inputValue) == 1:
             _newSheetCount = int(input())
             generateOngoing(_newSheetCount)
             _inputValue = 0
         elif int(_inputValue) == 2: 
-            _startOfRange = input("Beginn?\n")
-            _endOfRange = input("Ende?\n")
+            _startOfRange = int(input("Beginn?\n"))
+            _endOfRange = int(input("Ende?\n"))
             generateSpecific(_startOfRange, _endOfRange)
             _inputValue = 0
         elif int(_inputValue) == 3: 
             print("three works")
             _inputValue = 0
-    print("left loop now");
-        
+                    
 def generateOngoing(_newSheetCount):
     i = 0;
     while i < _newSheetCount:
@@ -33,11 +32,17 @@ def generateOngoing(_newSheetCount):
             _myStr = str(_myInt)+" "
         else: _myStr = "9999"
         bpy.data.objects["Text.002"].data.body = _myStr
-        i=i+1
+        bpy.context.scene.render.filepath = './img' + str(i)
         bpy.ops.render.render(write_still = 1)
+        i=i+1
     bpy.ops.wm.save_mainfile()
     print('done ongoing');
     
 def generateSpecific(_startOfRange, _endOfRange):
-    print('done specific');
+    i = 0;
+    for i in range (_startOfRange, _endOfRange+1):
+        bpy.data.objects["Text.002"].data.body = '0' * (3 - len(str(i))) + str(i)
+        bpy.context.scene.render.filepath = './img' + str(i)
+        bpy.ops.render.render(write_still = 1)
+        
 progStart();
